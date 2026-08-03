@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CheckInEntry, Profile, DEFAULT_PROFILE } from '../data/types';
+import { migrateEntry } from './migrations';
 
 const ENTRIES_KEY = 'checkingIn.entries';
 const PROFILE_KEY = 'checkingIn.profile';
@@ -8,7 +9,16 @@ export async function loadEntries(): Promise<CheckInEntry[]> {
   const raw = await AsyncStorage.getItem(ENTRIES_KEY);
   if (!raw) return [];
   try {
-    return JSON.parse(raw) as CheckInEntry[];
+    const parsed = JSON.parse(raw) as any[];
+    let anyMigrated = false;
+    const upgraded = parsed.map((rawEntry) => {
+      const startingVersion = rawEntry.version;
+      const migrated = migrateEntry(rawEntry);
+      if (migrated.version !== startingVersion) anyMigrated = true;
+      return migrated;
+    });
+    if (anyMigrated) await saveEntries(upgraded);
+    return upgraded;
   } catch {
     return [];
   }

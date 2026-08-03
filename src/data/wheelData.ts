@@ -109,3 +109,47 @@ export const TOTAL_TERTIARY_COUNT = wheel.reduce(
   (sum, section) => sum + section.secondaries.length * 2,
   0
 );
+
+// --- Taxonomy lookup -------------------------------------------------------
+// A stable id/valence/arousal per word, derived from `wheel` rather than
+// hand-duplicated, so there is a single source of truth for the wheel's
+// words. `wheel` itself is left untouched above so the current wheel UI
+// keeps working unmodified. valence/arousal are placeholder 0s until the
+// wheel is replaced and real coordinates are assigned.
+export interface TaxonomyWord {
+  id: string;
+  name: string;
+  color: string;
+  valence: number;
+  arousal: number;
+}
+
+function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+function buildTaxonomy(): Record<string, TaxonomyWord> {
+  const table: Record<string, TaxonomyWord> = {};
+  const add = (name: string, color: string) => {
+    table[name] = { id: slugify(name), name, color, valence: 0, arousal: 0 };
+  };
+  for (const section of wheel) {
+    add(section.name, section.color);
+    for (const secondary of section.secondaries) {
+      add(secondary.name, section.color);
+      for (const tertiary of secondary.tertiary) {
+        add(tertiary, section.color);
+      }
+    }
+  }
+  return table;
+}
+
+// Keyed by word name. Names that recur in more than one section (a handful
+// do, e.g. "Disappointed") resolve to whichever occurrence was added last;
+// migration explicitly matches by name and accepts that ambiguity.
+export const wordTaxonomy: Record<string, TaxonomyWord> = buildTaxonomy();

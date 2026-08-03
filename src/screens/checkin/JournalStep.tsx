@@ -45,6 +45,7 @@ export function JournalStep() {
     setSaving(true);
     const journalDone = !!photo || checked;
     const entry: CheckInEntry = {
+      version: 1,
       id: `${Date.now()}`,
       timestamp: Date.now(),
       core: draft.core,

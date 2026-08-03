@@ -1,10 +1,23 @@
 import React, { useMemo, useState } from 'react';
 import { View, LayoutChangeEvent } from 'react-native';
 import Svg, { G, Path, Text as SvgText, Circle } from 'react-native-svg';
-import { wheel } from '../../data/wheelData';
+import { wheel, wordTaxonomy } from '../../data/wheelData';
 import { WordPick } from '../../data/types';
 import { mixWhite } from '../../theme/tokens';
 import { sectionSpans, wedgePath, labelRotation, labelPosition } from './geometry';
+
+// Stamps id/valence/arousal from the taxonomy onto a selection, keeping the
+// visible color as this wedge's own section color (unchanged behavior).
+function toWordPick(name: string, color: string): WordPick {
+  const taxon = wordTaxonomy[name];
+  return {
+    id: taxon?.id ?? `unknown:${name}`,
+    name,
+    valence: taxon?.valence ?? 0,
+    arousal: taxon?.arousal ?? 0,
+    color,
+  };
+}
 
 const LABEL_INK = '#3a352f';
 const GAP_STROKE_WIDTH = 2;
@@ -104,7 +117,7 @@ export function EmotionsWheel({
                   fill={section.color}
                   stroke={isSelected ? SELECTED_STROKE : gapColor}
                   strokeWidth={isSelected ? 2.5 : GAP_STROKE_WIDTH}
-                  onPress={() => onSelectCore({ name: section.name, color: section.color })}
+                  onPress={() => onSelectCore(toWordPick(section.name, section.color))}
                 />
                 <RadialLabel x={lp.x} y={lp.y} angle={mid} fontSize={12.5}>
                   {section.name}
@@ -132,7 +145,7 @@ export function EmotionsWheel({
                       stroke={isSelected ? SELECTED_STROKE : gapColor}
                       strokeWidth={isSelected ? 2.5 : GAP_STROKE_WIDTH}
                       onPress={() =>
-                        onSelectSecondary({ name: secondary.name, color: section.color })
+                        onSelectSecondary(toWordPick(secondary.name, section.color))
                       }
                     />
                     <RadialLabel x={lp.x} y={lp.y} angle={mid} fontSize={10}>
@@ -181,7 +194,7 @@ export function EmotionsWheel({
                       fill={mixWhite(section.color, tint)}
                       stroke={isSelected ? SELECTED_STROKE : gapColor}
                       strokeWidth={isSelected ? 2.5 : GAP_STROKE_WIDTH}
-                      onPress={() => onSelectTertiary({ name: t.name, color: section.color })}
+                      onPress={() => onSelectTertiary(toWordPick(t.name, section.color))}
                     />
                     <RadialLabel x={lp.x} y={lp.y} angle={mid} fontSize={9.5}>
                       {t.name}
