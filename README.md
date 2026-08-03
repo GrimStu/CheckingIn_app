@@ -1,6 +1,11 @@
 # Checking In (React Native / Expo build)
 
-A native-feeling port of the `design_handoff_checking_in` prototype, built with Expo + TypeScript.
+A private check-in app for noticing and recording how you feel. Built with Expo
+and TypeScript, running on Android and iOS.
+
+Everything stays on the device. There is no account, no sync, and no network
+calls. Journal pages are written on paper and photographed, so the writing stays
+handwritten and the photo never leaves the phone.
 
 ## Run it
 
@@ -27,12 +32,11 @@ and reliable notification scheduling won't work there, but every other screen do
 - Local persistence (AsyncStorage) for entries and profile; scheduled daily local notifications
   via `expo-notifications`, with "Check in" / "Later" actions and a journal-outstanding variant.
 
-## Known gaps vs. the design spec
+## Known gaps
 
 - **App lock (PIN/biometric)**: the toggle is wired up and persists, but there's no actual lock
-  screen gating app launch yet — same as the original prototype, this needs a real implementation.
-- **Reminders surviving reboot**: `expo-notifications` schedules real OS-level local notifications,
-  which is a big step up from the prototype's mocked notification. For rock-solid reboot-survival
+  screen gating app launch yet.
+- **Reminders surviving reboot**: `expo-notifications` schedules real OS-level local notifications. For rock-solid reboot-survival
   and exact-alarm behavior on Android, build a **development build** via EAS
   (`npx eas build --profile development --platform android`) rather than relying on Expo Go —
   Expo Go itself isn't a persistent registered app the same way a standalone build is.
