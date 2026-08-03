@@ -38,3 +38,10 @@ and reliable notification scheduling won't work there, but every other screen do
   Expo Go itself isn't a persistent registered app the same way a standalone build is.
 - Camera/photo capture, image compression, and everything else run through standard Expo modules
   and should work as-is in Expo Go.
+
+## Licence
+
+Copyright (c) 2026 Stuart Morris. All rights reserved.
+
+This source is published for reference. No permission is granted to copy,
+modify, or distribute it.
