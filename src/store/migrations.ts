@@ -1,5 +1,6 @@
 import { CheckInEntry, WordPick } from '../data/types';
 import { wordTaxonomy } from '../data/wheelData';
+import { taxonomy, markers, TaxonomyWord } from '../data/taxonomy';
 
 // Each migration step upgrades an entry from exactly `from` to `from + 1`.
 // Add new steps to the end of `migrationSteps` as the taxonomy evolves —
@@ -46,7 +47,48 @@ const v0ToV1: MigrationStep = {
   }),
 };
 
-export const migrationSteps: MigrationStep[] = [v0ToV1];
+// v1 -> v2: the wheel taxonomy (wheelData.ts) is replaced by the original
+// word list in taxonomy.ts. Old wheel ids don't exist in the new taxonomy,
+// so re-resolve each pick by label (name) match instead.
+const labelToWord = new Map<string, TaxonomyWord>();
+for (const word of [...taxonomy, ...markers]) {
+  labelToWord.set(word.label.toLowerCase(), word);
+}
+
+function retaxonomize(raw: WordPick | undefined): WordPick | undefined {
+  if (!raw) return raw;
+  const match = labelToWord.get(raw.name.toLowerCase());
+  if (match) {
+    return {
+      id: match.id,
+      name: raw.name,
+      valence: match.valence,
+      arousal: match.arousal,
+      color: raw.color,
+    };
+  }
+  // No label match in the new taxonomy — keep the entry rather than drop it.
+  return {
+    id: `unknown:${raw.name}`,
+    name: raw.name,
+    valence: 0,
+    arousal: 0,
+    color: raw.color,
+  };
+}
+
+const v1ToV2: MigrationStep = {
+  from: 1,
+  upgrade: (entry) => ({
+    ...entry,
+    version: 2,
+    core: retaxonomize(entry.core),
+    second: retaxonomize(entry.second),
+    third: retaxonomize(entry.third),
+  }),
+};
+
+export const migrationSteps: MigrationStep[] = [v0ToV1, v1ToV2];
 
 export const CURRENT_ENTRY_VERSION = migrationSteps.length; // 1, once, etc. as steps are appended
 
