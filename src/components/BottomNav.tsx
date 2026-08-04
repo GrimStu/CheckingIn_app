@@ -29,7 +29,7 @@ export function BottomNav() {
               closeExerciseScreen();
               if (item.key === 'checkin' && !inProgress) {
                 resetDraft();
-                setCheckinStep('wheel1');
+                setCheckinStep('sky');
               }
               setActiveTab(item.key);
             }}

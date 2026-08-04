@@ -43,7 +43,7 @@ function NotificationBridge() {
       closeExerciseScreen();
       if (!inProgress) {
         resetDraft();
-        setCheckinStep('wheel1');
+        setCheckinStep('sky');
       }
       setActiveTab('checkin');
     });

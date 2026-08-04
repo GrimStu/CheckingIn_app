@@ -6,7 +6,7 @@ import { WordChip } from '../../components/Pill';
 import { AppButton } from '../../components/Button';
 import { FadeIn } from '../../components/FadeIn';
 import { useApp } from '../../store/AppContext';
-import { useNav, CheckInStep } from '../../store/NavContext';
+import { useNav } from '../../store/NavContext';
 
 export function ConfirmStep() {
   const { colors } = useTheme();
@@ -18,9 +18,7 @@ export function ConfirmStep() {
   >[];
 
   function adjust() {
-    const layerStep: CheckInStep =
-      draft.lastWheelLayer === 1 ? 'wheel1' : draft.lastWheelLayer === 2 ? 'wheel2' : 'wheel3';
-    setCheckinStep(layerStep);
+    setCheckinStep('sky');
   }
 
   return (

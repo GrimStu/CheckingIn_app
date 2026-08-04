@@ -1,5 +1,5 @@
 import React from 'react';
-import { WheelLayer1, WheelLayer2, WheelLayer3 } from './WheelSteps';
+import { SkyStep } from './SkyStep';
 import { ConfirmStep } from './ConfirmStep';
 import { BodyIntroStep, BodyMapStep } from './BodyScreens';
 import { JournalStep } from './JournalStep';
@@ -10,12 +10,8 @@ export function CheckInFlow() {
   const { checkinStep } = useNav();
 
   switch (checkinStep) {
-    case 'wheel1':
-      return <WheelLayer1 />;
-    case 'wheel2':
-      return <WheelLayer2 />;
-    case 'wheel3':
-      return <WheelLayer3 />;
+    case 'sky':
+      return <SkyStep />;
     case 'confirm':
       return <ConfirmStep />;
     case 'bodyIntro':
@@ -27,6 +23,6 @@ export function CheckInFlow() {
     case 'done':
       return <DoneStep />;
     default:
-      return <WheelLayer1 />;
+      return <SkyStep />;
   }
 }

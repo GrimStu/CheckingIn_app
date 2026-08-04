@@ -4,9 +4,7 @@ export type TabName = 'checkin' | 'history' | 'practices';
 export type HistoryTab = 'timeline' | 'calendar' | 'patterns';
 export type ExerciseName = 'bodyscan' | 'meditation' | 'eating' | 'senses';
 export type CheckInStep =
-  | 'wheel1'
-  | 'wheel2'
-  | 'wheel3'
+  | 'sky'
   | 'confirm'
   | 'bodyIntro'
   | 'body'
@@ -39,7 +37,7 @@ const NavContext = createContext<NavContextValue | undefined>(undefined);
 export function NavProvider({ children }: { children: React.ReactNode }) {
   const [activeTab, setActiveTabState] = useState<TabName>('checkin');
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [checkinStep, setCheckinStep] = useState<CheckInStep>('wheel1');
+  const [checkinStep, setCheckinStep] = useState<CheckInStep>('sky');
   const [historyTab, setHistoryTab] = useState<HistoryTab>('timeline');
   const [expandedEntryId, setExpandedEntryId] = useState<string | null>(null);
   const [openExercise, setOpenExercise] = useState<ExerciseName | null>(null);

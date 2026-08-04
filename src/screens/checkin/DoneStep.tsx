@@ -15,7 +15,7 @@ export function DoneStep() {
 
   function finish() {
     resetDraft();
-    setCheckinStep('wheel1');
+    setCheckinStep('sky');
   }
 
   return (

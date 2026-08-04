@@ -72,6 +72,10 @@ export const other = {
   scrim: 'rgba(20,16,10,.45)',
 };
 
+// Flat placeholder for every sky (taxonomy-based) WordPick, until the
+// cloudscape gets its own color treatment.
+export const skyWordColor = '#93897b';
+
 export const wheelColors: Record<string, string> = {
   Fearful: '#efc568',
   Angry: '#e8756a',

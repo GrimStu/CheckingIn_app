@@ -10,6 +10,7 @@ import { FadeIn } from '../../components/FadeIn';
 import { useApp } from '../../store/AppContext';
 import { useNav } from '../../store/NavContext';
 import { CheckInEntry } from '../../data/types';
+import { CURRENT_ENTRY_VERSION } from '../../store/migrations';
 import { rescheduleReminders } from '../../store/notifications';
 import { captureJournalPhoto, pickJournalPhoto } from '../../utils/media';
 
@@ -45,7 +46,7 @@ export function JournalStep() {
     setSaving(true);
     const journalDone = !!photo || checked;
     const entry: CheckInEntry = {
-      version: 1,
+      version: CURRENT_ENTRY_VERSION,
       id: `${Date.now()}`,
       timestamp: Date.now(),
       core: draft.core,
